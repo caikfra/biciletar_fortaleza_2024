@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bicicletar Fortaleza - Mobilidade Urbana</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@1,800&family=Montserrat:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@observablehq/inspector@5/dist/inspector.css">
+
+    <style>
+        /* --- ESTILIZAÇÃO GERAL --- */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+            font-family: 'Montserrat', sans-serif;
+            color: black;
+        }
+
+        /* O container principal agora organiza as duas colunas */
+        .main-container {
+            display: flex; /* Ativa o modo flexbox */
+            flex-direction: row; /* Coloca lado a lado */
+            max-width: 1400px; /* Largura máxima um pouco maior */
+            width: 95%;
+            margin: 40px auto; /* Centraliza na tela */
+            gap: 40px; /* Espaço entre o mapa e a coluna da direita */
+            align-items: flex-start; /* Alinha tudo ao topo */
+        }
+
+        /* --- COLUNA DA ESQUERDA (MAPA) --- */
+        .left-column {
+            flex: 3; /* Ocupa proporcionalmente mais espaço (ex: 60%) */
+            width: 100%;
+        }
+
+        /* --- COLUNA DA DIREITA (TEXTOS E BARRAS) --- */
+        .right-column {
+            flex: 2; /* Ocupa proporcionalmente menos espaço (ex: 40%) */
+            display: flex;
+            flex-direction: column; /* Itens internos empilhados */
+            text-align: left; /* Alinhamento à esquerda conforme imagem */
+        }
+
+        /* --- TIPOGRAFIA (Adaptada para alinhamento à esquerda) --- */
+        h1 {
+            font-family: 'Barlow', sans-serif;
+            font-weight: 800;
+            font-style: italic;
+            font-size: 42px; /* Um pouco menor para caber na coluna */
+            margin: 0;
+            line-height: 1.1;
+        }
+
+        h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 400;
+            font-size: 22px;
+            margin-top: 10px;
+            margin-bottom: 30px;
+            color: #444;
+        }
+
+        .intro-text {
+            font-family: 'Montserrat', sans-serif;
+            font-style: italic;
+            font-size: 15px;
+            line-height: 1.5;
+            margin-bottom: 30px;
+        }
+
+        /* Áreas onde os gráficos serão desenhados */
+        #map-area, #dashboard-area {
+            width: 100%;
+        }
+        
+        /* --- RESPONSIVIDADE (Para celulares e tablets) --- */
+        /* Quando a tela for menor que 900px, muda o layout */
+        @media (max-width: 900px) {
+            .main-container {
+                flex-direction: column; /* Empilha as colunas verticalmente */
+            }
+            .left-column, .right-column {
+                width: 100%; /* Ocupam a largura total */
+                flex: auto;
+            }
+            .right-column {
+                 /* Opcional: centralizar o texto no mobile se preferir */
+                 /* text-align: center; */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+        
+        <div class="left-column">
+            <div id="map-area"></div>
+        </div>
+
+        <div class="right-column">
+            <h1>Bicicletar Fortaleza</h1>
+            <h2>um olhar sobre mobilidade urbana</h2>
+
+            <p class="intro-text">
+                Os gráficos refletem sobre as viagens feitas por usuários do serviço público “bicicletar”, no ano 2024 de março a junho, na cidade de Fortaleza - CE
+            </p>
+
+            <div id="dashboard-area"></div>
+        </div>
+
+    </div>
+
+
+    <script type="module">
+        import {Runtime, Inspector} from "https://cdn.jsdelivr.net/npm/@observablehq/runtime@5/dist/runtime.js";
+        
+        // --- IMPORTANDO OS DOIS NOTEBOOKS ---
+        // Dê nomes diferentes, ex: define1 e define2
+        import define1 from "https://api.observablehq.com/d/8c24141c2b43a6e9@97.js?v=4"; 
+        import define2 from "https://api.observablehq.com/@matheus-finger/bicicletar-2024-marco-a-junho-um-olhar-sobre-a-mob.js?v=4"; 
+
+        // Cria o "motor" do Observable uma vez só
+        const runtime = new Runtime();
+
+        // --- CONFIGURAÇÃO DO PRIMEIRO NOTEBOOK (Ex: Onde estão os Gráficos de Barra) ---
+        runtime.module(define1, name => {
+            if (name === "viewof dashboard") {
+                return new Inspector(document.querySelector("#dashboard-area"));
+            }
+            return null; // Esconde o resto
+        });
+
+        // --- CONFIGURAÇÃO DO SEGUNDO NOTEBOOK (Ex: Onde está o Mapa) ---
+        runtime.module(define2, name => {
+            if (name === "viewof mapa_log_transform") { // Lembre de conferir o nome da célula do mapa!
+                return new Inspector(document.querySelector("#map-area"));
+            }
+            return null; // Esconde o resto deste notebook também
+        });
+    </script>
+
+</body>
+</html>
