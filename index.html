@@ -121,7 +121,7 @@
         import {Runtime, Inspector} from "https://cdn.jsdelivr.net/npm/@observablehq/runtime@5/dist/runtime.js";
         
         // --- IMPORTANDO OS DOIS NOTEBOOKS ---
-        // Dê nomes diferentes, ex: define1 e define2
+        // Dê nomes diferentes, ex: define1 
         import define1 from "https://api.observablehq.com/d/8c24141c2b43a6e9@97.js?v=4"; 
 
         // Cria o "motor" do Observable uma vez só
@@ -132,7 +132,7 @@
             if (name === "viewof dashboard") {
                 return new Inspector(document.querySelector("#dashboard-area"));
             }
-            if (name === "mapa") {
+            if (name === "viewof mapa_saldo_d3") {
                  return new Inspector(document.querySelector("#map-area"))
             }
             return null; // Esconde o resto
