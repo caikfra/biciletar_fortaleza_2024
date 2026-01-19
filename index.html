@@ -23,17 +23,220 @@
         </p>
     </header>
 
-    <div class="graphics-container">
+    <!-- Primeira linha horizontal com duas colunas -->
+    <div class="graphics-row">
+        <div class="graphics-column">
+            <div class="map-wrapper">
+                <div style="margin-bottom: 15px; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                    <h3 style="margin: 0; color: #2c3e50;">Mapa de calor do número de viagens por dia da semana e hora</h3>
+                </div>
+                <div id="heatmap" class="chart-container"></div>
+            </div>
+        </div>
         
-        <div class="map-wrapper">
-            <div id="map-area"></div>       <div id="dashboard-area"></div> </div>
-
-        <div class="dashboard-wrapper">
-            <div id="grafo"></div>          <div id="mapa-regionais"></div> <div id="heatmap"></div>        </div>
-
+        <div class="graphics-column">
+            <div class="dashboard-wrapper">
+                <div style="margin-bottom: 15px; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                    <h3 style="margin: 0; color: #2c3e50;">Gráfico de pontos (scatterplot) da relação entre distância percorrida e duração da viagem, com histogramas da distruibuição.</h3>
+                </div>
+                <div id="dashboard-area" class="chart-container"></div>
+            </div>
+        </div>
     </div>
 
-    <script type="module" src="codigo.js"></script>
+    <!-- Segunda linha horizontal com duas colunas -->
+    <div class="graphics-row">
+        <div class="graphics-column">
+            <div class="map-wrapper">
+                <div id="map-area" class="chart-container"></div>
+            </div>
+        </div>
+        
+        <div class="graphics-column">
+            <div class="dashboard-wrapper">
+                <div id="grafo" class="chart-container"></div>
+            </div>
+        </div>
+    </div>
+    <div class="graphics-row">
+        <div class="graphics-column">
+        </div>
+        
+        <div class="graphics-column">
+            <div class="dashboard-wrapper">
+                <div id="mapa-regionais" class="chart-container"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Seção de Storytelling - Primeiro gráfico -->
+    <div class="storytelling-section">
+        <div class="story-text">
+            <h2 class="story-title">Bicicletar: A Mobilidade Sobre Duas Rodas em Fortaleza</h2>
+            <p>O Bicicletar é o sistema de bicicletas compartilhadas da Prefeitura de Fortaleza, um dos maiores do Brasil em número de estações por habitantes. Para entender melhor sua utilização e distribuição, coletamos e analisamos os dados oficiais disponibilizados pela gestão municipal, focando no período de março a junho de 2024.</p>
+            
+            <p>Nossa análise coincide com um momento importante de expansão e modernização do sistema, que passou a alcançar todas as 12 regionais administrativas da capital com 267 estações. No entanto, a cobertura ainda não é uniforme. Apenas 75 dos 121 bairros de Fortaleza contam com estações, e a infraestrutura permanece mais concentrada na região central e em áreas já consolidadas.</p>
+            
+            <p>Explore abaixo os dados que mapeiam o volume de viagens e descubra quais bairros lideram o uso do Bicicletar.</p>
+        </div>
+        
+        <div class="story-chart">
+            <div class="chart-title">
+                <h3>Mapa das estações do Bicicletar em Fortaleza</h3>
+            </div>
+            <div id="mapa1" class="chart-container"></div>
+        </div>
+    </div>
+
+    <!-- Seção de Storytelling - Segundo gráfico (mapa) -->
+    <div class="storytelling-section">
+        <!-- Seção de Storytelling - Segundo gráfico (mapa) -->
+        <div class="story-text">
+            <h2 class="story-title">Mapa de Saldo de Viagens por Bairro</h2>
+            <p>Este mapa mostra o fluxo líquido de bicicletas no Bicicletar: se um bairro é mais "exportador" (vermelho), com mais viagens saindo do que chegando, ou "importador" (azul), com o movimento oposto. A intensidade da cor revela a força desse fluxo.</p>
+            
+            <p>A dinâmica do sistema muda radicalmente ao longo do dia. De manhã, observa-se um forte fluxo em direção ao centro da cidade. À noite, o movimento se inverte, com as bicicletas retornando para os bairros residenciais.</p>
+            
+            <p>No panorama geral (sem filtro), a cidade mostra um saldo negativo no centro, confirmando que as estações servem majoritariamente para os trajetos de volta para casa ao final do dia. Os bairros com maior movimento definem os principais "hubs" do sistema, conectando regiões da cidade.</p>
+            
+            <!-- Container para os botões importados do Observable -->
+            <div id="botoes-filtro-container" style="margin: 20px 0;"></div>
+            
+            <h3 class="interpretation-title">Como interpretar o mapa:</h3>
+            <ul class="interpretation-list">
+                <li><span class="color-indicator blue"></span> <strong>Azul (Importador):</strong> Recebe mais bicicletas do que envia.</li>
+                <li><span class="color-indicator red"></span> <strong>Vermelho (Exportador):</strong> Envia mais bicicletas do que recebe.</li>
+                <li><span class="color-indicator gray"></span> <strong>Cinza:</strong> Bairro sem dados ou com saldo neutro.</li>
+            </ul>
+        </div>
+
+        
+        <div class="story-chart">
+            <div id="map-area1" class="chart-container"></div>
+        </div>
+    </div>
+
+    <!-- Seção de Storytelling - Grafo de fluxos -->
+    <div class="storytelling-section">
+        <div class="story-text">
+            <h2 class="story-title">Grafo de Fluxos entre Regionais</h2>
+            <p>Enquanto o mapa revela a dinâmica nos bairros, este grafo desagrega o movimento para o nível das 12 Regionais Administrativas de Fortaleza, mostrando as conexões de alta escala entre elas.</p>
+            
+            <h3>O que o grafo revela: O domínio das viagens intra-regionais</h3>
+            <p>A característica mais marcante é a densa rede de conexões que começa e termina dentro de uma mesma regional. Isso é evidenciado pelos links mais espessos e numerosos que conectam o nó de origem de uma regional ao seu próprio nó de destino (à direita).</p>
+            
+            <p>Esta forte concentração de fluxos internos é o retrato visual de um padrão fundamental do uso do Bicicletar: a maioria das viagens é curta e serve a deslocamentos locais. Esse padrão está alinhado com a principal função dos sistemas de bicicletas compartilhadas no mundo, que é solucionar o problema do "último quilômetro", ou seja, complementar trajetos maiores realizados por outros meios, como ônibus ou metrô.</p>
+            
+            <p>Essas viagens curtas podem representar dois tipos principais de uso:</p>
+            
+            <div class="insight-container">
+                <div class="insight-item">
+                    <h4>🚌 Conexão Multimodal</h4>
+                    <p>Uma bicicleta usada para percorrer a distância entre um ponto de ônibus e o trabalho, ou entre duas estações de metrô próximas.</p>
+                </div>
+                
+                <div class="insight-item">
+                    <h4>🏘️ Deslocamentos Locais</h4>
+                    <p>Uso para lazer, compras rápidas, visitas ou deslocamentos dentro do próprio bairro, onde a bicicleta é mais prática e ágil do que um carro.</p>
+                </div>
+            </div>
+            
+            <h3>Como interpretar a visualização:</h3>
+            <ul class="interpretation-list">
+                <li><span class="color-indicator red"></span> <strong>Nó Vermelho (Esquerda):</strong> Representa uma Regional de <strong>ORIGEM</strong> das viagens.</li>
+                <li><span class="color-indicator blue"></span> <strong>Nó Azul (Direita):</strong> Representa uma Regional de <strong>DESTINO</strong> das viagens.</li>
+                <li><strong>Tamanho dos Nós:</strong> Indica o volume total de viagens que se originam (nó vermelho) ou terminam (nó azul) naquela regional.</li>
+                <li><strong>Espessura dos Links:</strong> Mostra a intensidade do fluxo entre a origem (esquerda) e o destino (direita). Links muito finos entre regional A e B indicam poucas viagens diretas entre elas.</li>
+            </ul>
+            
+            <p>Esta visão macro confirma que, embora haja fluxos expressivos entre certas regionais (como do centro para áreas residenciais no fim do dia), o coração do sistema Bicicletar bate nos deslocamentos curtos dentro de cada região da cidade.</p>
+        </div>
+        
+        <div class="story-chart">
+            <div class="chart-title">
+                <h3>Fluxos entre Regionais Administrativas</h3>
+            </div>
+            <div id="grafo1" class="chart-container"></div>
+                <div id="mapa-regionais1" class="chart-container"></div>
+            
+        </div>
+    </div>
+    <!-- Seção de Storytelling - Heatmap de padrões de uso -->
+    <div class="storytelling-section">
+        <div class="story-text">
+            <h2 class="story-title">Padrões de Uso: Quando as Bicicletas são Mais Usadas?</h2>
+            <p>O heatmap acima responde com clareza a duas perguntas principais: 1) Existem horários de pico consistentes? e 2) Qual a relação entre o dia da semana e o número de viagens? A visualização das viagens agregadas por dia da semana e hora do dia revela padrões marcantes que refletem os hábitos de mobilidade da cidade.</p>
+            
+            <p>Os Dois Picos de Mobilidade: A Rotina da Cidade<br/>
+            A análise confirma a existência de dois horários de pico bem definidos, intimamente ligados aos turnos de trabalho e estudo:<br/>
+<br/>
+            🔵 Pico Matinal (6h - 8h): Um fluxo concentrado e intenso de viagens, representando o deslocamento para o trabalho e a escola.<br/>
+<br/>
+            🔴 Pico Vespertino/Noturno (16h - 20h): Este é, de longe, o período de maior movimento no sistema. A intensidade e duração 
+            deste pico sugerem fortemente que a bicicleta é o meio de transporte preferido para o retorno ao lar. Esta preferência pode estar
+            relacionada à conveniência de evitar o trânsito intenso no fim do dia, aliada à maior flexibilidade para lidar com questões como suor e troca de roupa após o expediente, em comparação com o trajeto de ida.<br/>
+<br/>
+            Dias Úteis vs. Fins de Semana: Dois Ritmos Diferentes<br/>
+            A comparação entre as linhas da semana é reveladora:<br/>
+<br/>
+            De Segunda a Sexta: O padrão de "montanha dupla" (manhã e noite) é forte e consistente, especialmente de terça a quinta-feira. A
+            segunda-feira tende a ser ligeiramente menos intensa, e a sexta-feira já mostra uma pequena transição, com o pico da noite começando mais cedo — um possível reflexo do início dos compromissos sociais de fim de semana.<br/>
+<br/>
+            Sábado e Domingo: A dinâmica muda completamente. Os picos rígidos se dissipam,
+            dando lugar a um padrão de uso mais distribuído e suave ao longo do dia, com uma leve
+            concentração no período da tarde. O pico matinal praticamente desaparece, e o uso noturno é mais modesto, indicando que as bicicletas são usadas principalmente para lazer, compras e passeios.<br/>               
+<br/>
+            Como Interpretar o Heatmap:<br/>
+            Cores Quentes (Laranja/Vermelho): Representam os momentos de maior volume de viagens.<br/>
+<br/>
+            Cores Frias (Amarelo/Bege): Indicam períodos de menor movimento.<br/>
+<br/>
+            </p>
+            </div>
+        <div class="story-chart">
+            <div class="chart-title">
+                <h3>Volume de Viagens por Dia e Hora</h3>
+            </div>
+            <div id="heatmap1" class="chart-container"></div>
+            
+        </div>
+    </div>
+    <!-- Seção de Storytelling - Heatmap de padrões de uso -->
+    <div class="storytelling-section">
+        <div class="story-text">
+            <h2 class="story-title">Duração x Distância: A Anatomia das Viagens do Bicicletar </h2>
+            <p> Este gráfico de dispersão com histogramas marginais investiga a relação fundamental
+                entre a Duração e a Distância das viagens do Bicicletar. Ele nos ajuda a responder: as viagens mais longas cobrem necessariamente mais distância? Ou existe uma grande variedade nos padrões de uso?<br>
+<br>
+Análise da Nuvem de Pontos (Dispersão)<br>
+A primeira observação é clara: não há uma relação linear óbvia ou forte correlação positiva entre os pontos. Ou seja, uma duração maior não garante uma distância muito maior percorrida, e vice-versa.<br>
+<br>
+A dispersão ampla e vertical dos pontos (principalmente na faixa de 0 a 20 minutos) revela um fenômeno crucial: viagens de duração similar podem cobrir distâncias muito diferentes. Isto sugere
+que fatores externos — como o tráfego, a topografia, os semáforos ou até o objetivo do ciclista (como um passeio de lazer versus um deslocamento direto para o trabalho) — influenciam muito mais
+o tempo da viagem do que simplesmente a distância em linha reta. É a prova visual de que o ciclista urbano navega por um ambiente dinâmico e cheio de variáveis.<br>
+<br>
+Análise das Distribuições (Histogramas)<br>
+É nos histogramas que encontramos as conclusões mais sólidas sobre o comportamento típico do sistema:<br>
+<br>
+Histograma Superior (Distância): Confirma que as distâncias percorridas são um pouco mais dispersas, com uma distribuição que pode variar significativamente. É comum observar um pico inicial 
+de muitas viagens muito curtas (primeira milha/conexão) e uma "cauda longa" de viagens menos frequentes, mas que atingem distâncias maiores. <br>
+<br>
+Histograma Lateral (Duração): Aqui está a revelação principal: a esmagadora maioria das viagens está concentrada entre 0 e 20 minutos. Este é o "coração"
+operacional do Bicicletar. Esta forte concentração comprova que o sistema é majoritariamente utilizado para deslocamentos curtos e práticos, perfeitos para
+resolver o "último quilômetro" de uma viagem maior, fazer pequenos trajetos no bairro ou para passeios de lazer rápidos.<br>
+            </p>
+            </div>
+        <div class="story-chart">
+            <div class="chart-title">
+                <h3>Gráfico de pontos de distancia vs duração</h3>
+            </div>
+            <div id="dashboard-area1" class="chart-container"></div>
+            
+        </div>
+    </div>
+
+    <script type="module" src="codigo.js">
+    </script>
 
 </body>
 </html>
