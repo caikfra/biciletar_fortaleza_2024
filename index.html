@@ -19,39 +19,24 @@
             background-color: #ffffff;
             font-family: 'Montserrat', sans-serif;
             color: black;
-        }
-
-        /* O container principal agora organiza as duas colunas */
-        .main-container {
-            display: flex; /* Ativa o modo flexbox */
-            flex-direction: row; /* Coloca lado a lado */
-            max-width: 1400px; /* Largura máxima um pouco maior */
-            width: 95%;
-            margin: 40px auto; /* Centraliza na tela */
-            gap: 40px; /* Espaço entre o mapa e a coluna da direita */
-            align-items: flex-start; /* Alinha tudo ao topo */
-        }
-
-        /* --- COLUNA DA ESQUERDA (MAPA) --- */
-        .left-column {
-            flex: 3; /* Ocupa proporcionalmente mais espaço (ex: 60%) */
-            width: 100%;
-        }
-
-        /* --- COLUNA DA DIREITA (TEXTOS E BARRAS) --- */
-        .right-column {
-            flex: 2; /* Ocupa proporcionalmente menos espaço (ex: 40%) */
             display: flex;
-            flex-direction: column; /* Itens internos empilhados */
-            text-align: left; /* Alinhamento à esquerda conforme imagem */
+            flex-direction: column;
+            align-items: center; /* Centraliza os blocos (header e gráficos) na tela */
         }
 
-        /* --- TIPOGRAFIA (Adaptada para alinhamento à esquerda) --- */
+        /* --- 1. CABEÇALHO (TÍTULO E TEXTO) --- */
+        header {
+            text-align: left; /* <--- MUDANÇA: Alinhado à esquerda */
+            width: 95%;       /* <--- MUDANÇA: Mesma largura dos gráficos */
+            max-width: 1400px; /* <--- MUDANÇA: Mesmo limite dos gráficos */
+            padding: 40px 0 20px 0; /* Removemos o padding lateral para alinhar seco com o gráfico */
+        }
+
         h1 {
             font-family: 'Barlow', sans-serif;
             font-weight: 800;
             font-style: italic;
-            font-size: 42px; /* Um pouco menor para caber na coluna */
+            font-size: 50px;
             margin: 0;
             line-height: 1.1;
         }
@@ -59,83 +44,101 @@
         h2 {
             font-family: 'Montserrat', sans-serif;
             font-weight: 400;
-            font-size: 22px;
-            margin-top: 10px;
-            margin-bottom: 30px;
+            font-size: 24px;
+            margin-top: 5px;
+            margin-bottom: 20px;
             color: #444;
         }
 
         .intro-text {
             font-family: 'Montserrat', sans-serif;
             font-style: italic;
-            font-size: 15px;
+            font-size: 16px;
             line-height: 1.5;
-            margin-bottom: 30px;
+            color: #666;
+            max-width: 800px; /* Limita apenas a largura do texto para não cansar a leitura */
         }
 
-        /* Áreas onde os gráficos serão desenhados */
+        /* --- 2. ÁREA DOS GRÁFICOS --- */
+        .graphics-container {
+            width: 95%;
+            max-width: 1400px; 
+            margin-bottom: 50px;
+            
+            display: flex; 
+            flex-direction: row; 
+            gap: 30px;
+            align-items: flex-start;
+        }
+
+        .map-wrapper {
+            flex: 3; 
+        }
+
+        .dashboard-wrapper {
+            flex: 2; 
+        }
+
         #map-area, #dashboard-area {
             width: 100%;
+            min-height: 300px;
         }
-        
-        /* --- RESPONSIVIDADE (Para celulares e tablets) --- */
-        /* Quando a tela for menor que 900px, muda o layout */
+
+        /* --- RESPONSIVIDADE (CELULAR) --- */
         @media (max-width: 900px) {
-            .main-container {
-                flex-direction: column; /* Empilha as colunas verticalmente */
+            .graphics-container {
+                flex-direction: column; 
             }
-            .left-column, .right-column {
-                width: 100%; /* Ocupam a largura total */
-                flex: auto;
+            .map-wrapper, .dashboard-wrapper {
+                width: 100%;
             }
-            .right-column {
-                 /* Opcional: centralizar o texto no mobile se preferir */
-                 /* text-align: center; */
-            }
+            h1 { font-size: 36px; }
         }
     </style>
 </head>
 <body>
 
-    <div class="main-container">
+    <header>
+        <h1>Bicicletar Fortaleza</h1>
+        <h2>um olhar sobre mobilidade urbana</h2>
+        <p class="intro-text">
+            Os gráficos refletem sobre as viagens feitas por usuários do serviço público “bicicletar”, no ano 2024 de março a junho, na cidade de Fortaleza - CE
+        </p>
+    </header>
+
+    <div class="graphics-container">
         
-        <div class="left-column">
+        <div class="map-wrapper">
             <div id="map-area"></div>
         </div>
 
-        <div class="right-column">
-            <h1>Bicicletar Fortaleza</h1>
-            <h2>um olhar sobre mobilidade urbana</h2>
-
-            <p class="intro-text">
-                Os gráficos refletem sobre as viagens feitas por usuários do serviço público “bicicletar”, no ano 2024 de março a junho, na cidade de Fortaleza - CE
-            </p>
-
+        <div class="dashboard-wrapper">
             <div id="dashboard-area"></div>
         </div>
 
     </div>
 
-
     <script type="module">
         import {Runtime, Inspector} from "https://cdn.jsdelivr.net/npm/@observablehq/runtime@5/dist/runtime.js";
         
-        // --- IMPORTANDO OS DOIS NOTEBOOKS ---
-        // Dê nomes diferentes, ex: define1 
+        // SEU LINK UNLISTED
         import define1 from "https://api.observablehq.com/d/71aaea5660232824.js?v=4"; 
 
-        // Cria o "motor" do Observable uma vez só
         const runtime = new Runtime();
 
-        // --- CONFIGURAÇÃO DO PRIMEIRO NOTEBOOK (Ex: Onde estão os Gráficos de Barra) ---
         runtime.module(define1, name => {
+            
+            // 1. Gráficos de Barra
             if (name === "viewof dashboard") {
                 return new Inspector(document.querySelector("#dashboard-area"));
             }
+            
+            // 2. Mapa 
             if (name === "viewof mapa_saldo_d3") {
                  return new Inspector(document.querySelector("#map-area"))
             }
-            return null; // Esconde o resto
+
+            return null;
         });
     </script>
 
