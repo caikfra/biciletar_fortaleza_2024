@@ -133,20 +133,35 @@
     <script type="module">
         import {Runtime, Inspector} from "https://cdn.jsdelivr.net/npm/@observablehq/runtime@5/dist/runtime.js";
         
-        // SEU LINK UNLISTED
+        // link notebook
         import define1 from "https://api.observablehq.com/@matheus-finger/bicicletar-com-d3.js?v=4"; 
 
         const runtime = new Runtime();
 
         runtime.module(define1, name => {
             
-            // 1. Gráficos de Barra
-            if (name === "viewof dashboard") {
+            // Scatter
+            if (name === "viewof scatterMarginal") {
                 return new Inspector(document.querySelector("#dashboard-area"));
             }
             
-            // 2. Mapa 
+            // Mapa grande
             if (name === "viewof mapa_saldo_d3") {
+                 return new Inspector(document.querySelector("#map-area"))
+            }
+
+            // Mapa estações
+            if (name === "viewof mapa") {
+                 return new Inspector(document.querySelector("#map-area"))
+            }
+
+            // Heatmap
+            if (name === "viewof heatmapFiltros") {
+                 return new Inspector(document.querySelector("#map-area"))
+            }
+
+            // Grafo
+            if (name === "viewof grafo_bipartido") {
                  return new Inspector(document.querySelector("#map-area"))
             }
 
