@@ -89,6 +89,7 @@
         }
 
         /* --- ESTILOS DOS GRÁFICOS --- */
+        /* Importante: Adicionei todos os IDs aqui para garantir tamanho */
         #map-area, #grafo, #dashboard-area, #heatmap, #mapa-regionais {
             width: 100%;
             min-height: 300px; 
@@ -127,49 +128,48 @@
     <div class="graphics-container">
         
         <div class="map-wrapper">
-            <div id="grafo"></div>          
-            
-            <div id="mapa-regionais"></div> 
-            
-            <div id="map-area"></div>       
+            <div id="map-area"></div>       <div id="dashboard-area"></div> 
+            <div id="heatmap"></div>        
         </div>
 
         <div class="dashboard-wrapper">
-            <div id="dashboard-area"></div> <div id="heatmap"></div>        </div>
+            <div id="grafo"></div>          <div id="mapa-regionais"></div> </div>
 
     </div>
 
     <script type="module">
         import {Runtime, Inspector} from "https://cdn.jsdelivr.net/npm/@observablehq/runtime@5/dist/runtime.js";
         
-        // Link público
+        // Link atualizado (Público)
         import define1 from "https://api.observablehq.com/@matheus-finger/bicicletar-com-d3.js?v=4"; 
 
         const runtime = new Runtime();
 
         runtime.module(define1, name => {
             
-            // --- ESQUERDA (TOPO) ---
+            // --- COLUNA DIREITA (TOPO) ---
             if (name === "viewof grafo_bipartido") {
                  return new Inspector(document.querySelector("#grafo"))
             }
 
-            // --- ESQUERDA (MEIO) ---
+            // --- COLUNA DIREITA (EMBAIXO) ---
+            // Atenção: Usei "mapa_regionais" conforme seu último código.
+            // Se no notebook for "viewof mapa_regionais", ajuste aqui.
             if (name === "mapa_regionais") {
                  return new Inspector(document.querySelector("#mapa-regionais"))
             }
-            
-            // --- ESQUERDA (FIM - O mapa antigo) ---
+
+            // --- COLUNA ESQUERDA (TOPO) ---
             if (name === "viewof mapa_saldo_d3") {
                  return new Inspector(document.querySelector("#map-area"))
             }
 
-            // --- DIREITA (TOPO) ---
+            // --- COLUNA ESQUERDA (EMBAIXO 1) ---
             if (name === "viewof scatterMarginal") {
                 return new Inspector(document.querySelector("#dashboard-area"));
             }
 
-            // --- DIREITA (EMBAIXO) ---
+            // --- COLUNA ESQUERDA (EMBAIXO 2) ---
             if (name === "viewof heatmapFiltros") {
                  return new Inspector(document.querySelector("#heatmap"))
             }
