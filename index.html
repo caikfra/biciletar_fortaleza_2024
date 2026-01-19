@@ -21,22 +21,23 @@
             color: black;
             display: flex;
             flex-direction: column;
-            align-items: center; /* Centraliza os blocos (header e gráficos) na tela */
+            align-items: center;
+            overflow-x: hidden; /* Evita rolagem horizontal indesejada */
         }
 
-        /* --- 1. CABEÇALHO (TÍTULO E TEXTO) --- */
+        /* --- 1. CABEÇALHO --- */
         header {
-            text-align: left; /* <--- MUDANÇA: Alinhado à esquerda */
-            width: 95%;       /* <--- MUDANÇA: Mesma largura dos gráficos */
-            max-width: 1400px; /* <--- MUDANÇA: Mesmo limite dos gráficos */
-            padding: 40px 0 20px 0; /* Removemos o padding lateral para alinhar seco com o gráfico */
+            text-align: left;
+            width: 90%;       
+            max-width: 1100px; /* <--- AJUSTE 1: Largura padrão de site "normal" */
+            padding: 40px 0 20px 0;
         }
 
         h1 {
             font-family: 'Barlow', sans-serif;
             font-weight: 800;
             font-style: italic;
-            font-size: 50px;
+            font-size: 42px; /* Reduzi levemente para harmonizar com 1100px */
             margin: 0;
             line-height: 1.1;
         }
@@ -44,7 +45,7 @@
         h2 {
             font-family: 'Montserrat', sans-serif;
             font-weight: 400;
-            font-size: 24px;
+            font-size: 20px;
             margin-top: 5px;
             margin-bottom: 20px;
             color: #444;
@@ -53,38 +54,49 @@
         .intro-text {
             font-family: 'Montserrat', sans-serif;
             font-style: italic;
-            font-size: 16px;
+            font-size: 14px;
             line-height: 1.5;
             color: #666;
-            max-width: 800px; /* Limita apenas a largura do texto para não cansar a leitura */
+            max-width: 700px;
         }
 
         /* --- 2. ÁREA DOS GRÁFICOS --- */
         .graphics-container {
-            width: 95%;
-            max-width: 1400px; 
+            width: 90%;
+            max-width: 1100px; /* <--- AJUSTE 1: Acompanha o cabeçalho */
             margin-bottom: 50px;
             
             display: flex; 
             flex-direction: row; 
-            gap: 30px;
+            gap: 20px; /* Espaço um pouco menor entre colunas */
             align-items: flex-start;
         }
 
+        /* --- AJUSTE 2: Forçando as colunas a respeitarem o tamanho --- */
         .map-wrapper {
             flex: 3; 
+            min-width: 0; /* O SEGREDO: permite que o flex item encolha */
         }
 
         .dashboard-wrapper {
             flex: 2; 
+            min-width: 0; /* O SEGREDO: permite que o flex item encolha */
         }
 
+        /* --- AJUSTE 3: Forçando o GRÁFICO a obedecer a div --- */
         #map-area, #dashboard-area {
             width: 100%;
-            min-height: 300px;
         }
 
-        /* --- RESPONSIVIDADE (CELULAR) --- */
+        /* Regra poderosa: força qualquer SVG ou Canvas (gráficos) a não estourar */
+        #map-area svg, #dashboard-area svg,
+        #map-area canvas, #dashboard-area canvas,
+        .observablehq svg {
+            max-width: 100% !important;
+            height: auto !important;
+        }
+
+        /* --- RESPONSIVIDADE --- */
         @media (max-width: 900px) {
             .graphics-container {
                 flex-direction: column; 
@@ -92,7 +104,7 @@
             .map-wrapper, .dashboard-wrapper {
                 width: 100%;
             }
-            h1 { font-size: 36px; }
+            h1 { font-size: 32px; }
         }
     </style>
 </head>
