@@ -1,0 +1,108 @@
+/* --- ESTILIZAÇÃO GERAL --- */
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff;
+    font-family: 'Montserrat', sans-serif;
+    color: black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
+}
+
+/* --- 1. CABEÇALHO --- */
+header {
+    text-align: left;
+    width: 90%;       
+    max-width: 1200px;
+    padding: 40px 0 20px 0;
+}
+
+h1 {
+    font-family: 'Barlow', sans-serif;
+    font-weight: 800;
+    font-style: italic;
+    font-size: 42px;
+    margin: 0;
+    line-height: 1.1;
+}
+
+h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    font-size: 20px;
+    margin-top: 5px;
+    margin-bottom: 20px;
+    color: #444;
+}
+
+.intro-text {
+    font-family: 'Montserrat', sans-serif;
+    font-style: italic;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #666;
+    max-width: 700px;
+}
+
+/* --- 2. CONTAINER PRINCIPAL --- */
+.graphics-container {
+    width: 90%;
+    max-width: 1200px;
+    margin-bottom: 50px;
+    
+    display: flex; 
+    flex-direction: row; 
+    gap: 20px; 
+    align-items: flex-start;
+}
+
+/* --- CONFIGURAÇÃO DAS COLUNAS --- */
+.map-wrapper, .dashboard-wrapper {
+    display: flex;           
+    flex-direction: column;  
+    gap: 15px; 
+    min-width: 0;
+}
+
+.map-wrapper {
+    flex: 1; /* 50% largura */
+}
+
+.dashboard-wrapper {
+    flex: 1; /* 50% largura */
+}
+
+/* --- ESTILOS DOS GRÁFICOS --- */
+#map-area, #grafo, #dashboard-area, #heatmap, #mapa-regionais {
+    width: 100%;
+    border-radius: 8px;
+}
+
+/* Alturas Mínimas */
+#map-area, #dashboard-area, #grafo, #heatmap {
+        min-height: 300px;
+}
+
+#mapa-regionais {
+    min-height: 200px; 
+}
+
+/* Força SVG/Canvas a não estourar */
+.observablehq svg, .observablehq canvas {
+    max-width: 100% !important;
+    height: auto !important;
+    display: block; 
+}
+
+/* --- RESPONSIVIDADE --- */
+@media (max-width: 900px) {
+    .graphics-container {
+        flex-direction: column; 
+    }
+    .map-wrapper, .dashboard-wrapper {
+        width: 100%;
+    }
+    h1 { font-size: 32px; }
+}
