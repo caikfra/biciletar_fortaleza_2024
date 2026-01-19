@@ -22,14 +22,14 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            overflow-x: hidden; /* Evita rolagem horizontal indesejada */
+            overflow-x: hidden;
         }
 
         /* --- 1. CABEÇALHO --- */
         header {
             text-align: left;
             width: 90%;       
-            max-width: 1100px; /* <--- AJUSTE 1: Largura padrão de site "normal" */
+            max-width: 1100px;
             padding: 40px 0 20px 0;
         }
 
@@ -37,7 +37,7 @@
             font-family: 'Barlow', sans-serif;
             font-weight: 800;
             font-style: italic;
-            font-size: 42px; /* Reduzi levemente para harmonizar com 1100px */
+            font-size: 42px;
             margin: 0;
             line-height: 1.1;
         }
@@ -60,46 +60,54 @@
             max-width: 700px;
         }
 
-        /* --- 2. ÁREA DOS GRÁFICOS --- */
+        /* --- 2. CONTAINER PRINCIPAL --- */
         .graphics-container {
             width: 90%;
-            max-width: 1100px; /* <--- AJUSTE 1: Acompanha o cabeçalho */
+            max-width: 1100px;
             margin-bottom: 50px;
             
             display: flex; 
             flex-direction: row; 
-            gap: 20px; /* Espaço um pouco menor entre colunas */
+            gap: 30px; /* Espaço horizontal entre Coluna Esquerda e Direita */
             align-items: flex-start;
         }
 
-        /* --- AJUSTE 2: Forçando as colunas a respeitarem o tamanho --- */
+        /* --- CONFIGURAÇÃO DAS COLUNAS (Vertical Stack) --- */
+        .map-wrapper, .dashboard-wrapper {
+            display: flex;           /* Habilita flexbox vertical */
+            flex-direction: column;  /* Empilha um embaixo do outro */
+            gap: 40px;               /* Espaço VERTICAL entre os gráficos */
+            min-width: 0;
+        }
+
         .map-wrapper {
-            flex: 3; 
-            min-width: 0; /* O SEGREDO: permite que o flex item encolha */
+            flex: 3; /* Coluna Esquerda mais larga (60%) */
         }
 
         .dashboard-wrapper {
-            flex: 2; 
-            min-width: 0; /* O SEGREDO: permite que o flex item encolha */
+            flex: 2; /* Coluna Direita mais estreita (40%) */
         }
 
-        /* --- AJUSTE 3: Forçando o GRÁFICO a obedecer a div --- */
-        #map-area, #dashboard-area {
+        /* --- ESTILOS DOS GRÁFICOS --- */
+        /* Define altura mínima para não sumirem enquanto carregam */
+        #map-area, #grafo, #dashboard-area, #heatmap {
             width: 100%;
+            min-height: 300px; 
+            /* background: #f9f9f9;  <-- Opcional: cor de fundo temporária para ver onde estão */
+            border-radius: 8px;
         }
 
-        /* Regra poderosa: força qualquer SVG ou Canvas (gráficos) a não estourar */
-        #map-area svg, #dashboard-area svg,
-        #map-area canvas, #dashboard-area canvas,
-        .observablehq svg {
+        /* Força SVG/Canvas a não estourar a largura */
+        .observablehq svg, .observablehq canvas {
             max-width: 100% !important;
             height: auto !important;
+            display: block; /* Remove espaços extras */
         }
 
         /* --- RESPONSIVIDADE --- */
         @media (max-width: 900px) {
             .graphics-container {
-                flex-direction: column; 
+                flex-direction: column; /* Em celular, tudo vira uma coluna só */
             }
             .map-wrapper, .dashboard-wrapper {
                 width: 100%;
@@ -121,49 +129,48 @@
     <div class="graphics-container">
         
         <div class="map-wrapper">
-            <div id="map-area"></div>
-        </div>
+            <div id="map-area"></div> <div id="grafo"></div>    </div>
 
         <div class="dashboard-wrapper">
-            <div id="dashboard-area"></div>
-        </div>
+            <div id="dashboard-area"></div> <div id="heatmap"></div>        </div>
 
     </div>
 
     <script type="module">
         import {Runtime, Inspector} from "https://cdn.jsdelivr.net/npm/@observablehq/runtime@5/dist/runtime.js";
         
-        // link notebook
+        // Link atualizado (Público)
         import define1 from "https://api.observablehq.com/@matheus-finger/bicicletar-com-d3.js?v=4"; 
 
         const runtime = new Runtime();
 
         runtime.module(define1, name => {
             
-            // Scatter
+            // --- DIREITA (TOPO) ---
             if (name === "viewof scatterMarginal") {
                 return new Inspector(document.querySelector("#dashboard-area"));
             }
             
-            // Mapa grande
+            // --- ESQUERDA (TOPO) ---
             if (name === "viewof mapa_saldo_d3") {
                  return new Inspector(document.querySelector("#map-area"))
             }
 
-            // Mapa estações
-            if (name === "viewof mapa") {
-                 return new Inspector(document.querySelector("#map-area"))
-            }
-
-            // Heatmap
-            if (name === "viewof heatmapFiltros") {
-                 return new Inspector(document.querySelector("#map-area"))
-            }
-
-            // Grafo
+            // --- ESQUERDA (EMBAIXO) ---
             if (name === "viewof grafo_bipartido") {
-                 return new Inspector(document.querySelector("#map-area"))
+                 return new Inspector(document.querySelector("#grafo"))
             }
+
+            // --- DIREITA (EMBAIXO) ---
+            if (name === "viewof heatmapFiltros") {
+                 return new Inspector(document.querySelector("#heatmap"))
+            }
+
+            // --- MAPA ESTAÇÕES (Comentei para não dar erro, pois não tem div no HTML acima) ---
+            /* if (name === "viewof mapa") {
+                 return new Inspector(document.querySelector("#map-estacoes"))
+            } 
+            */
 
             return null;
         });
