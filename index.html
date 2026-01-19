@@ -89,7 +89,6 @@
         }
 
         /* --- ESTILOS DOS GRÁFICOS --- */
-        /* Importante: Adicionei todos os IDs aqui para garantir tamanho */
         #map-area, #grafo, #dashboard-area, #heatmap, #mapa-regionais {
             width: 100%;
             min-height: 300px; 
@@ -128,12 +127,10 @@
     <div class="graphics-container">
         
         <div class="map-wrapper">
-            <div id="map-area"></div>       <div id="dashboard-area"></div> 
-            <div id="heatmap"></div>        
-        </div>
+            <div id="map-area"></div>       <div id="dashboard-area"></div> </div>
 
         <div class="dashboard-wrapper">
-            <div id="grafo"></div>          <div id="mapa-regionais"></div> </div>
+            <div id="grafo"></div>          <div id="mapa-regionais"></div> <div id="heatmap"></div>        </div>
 
     </div>
 
@@ -152,11 +149,14 @@
                  return new Inspector(document.querySelector("#grafo"))
             }
 
-            // --- COLUNA DIREITA (EMBAIXO) ---
-            // Atenção: Usei "mapa_regionais" conforme seu último código.
-            // Se no notebook for "viewof mapa_regionais", ajuste aqui.
+            // --- COLUNA DIREITA (MEIO) ---
             if (name === "mapa_regionais") {
                  return new Inspector(document.querySelector("#mapa-regionais"))
+            }
+
+            // --- COLUNA DIREITA (EMBAIXO) ---
+            if (name === "viewof heatmapFiltros") {
+                 return new Inspector(document.querySelector("#heatmap"))
             }
 
             // --- COLUNA ESQUERDA (TOPO) ---
@@ -164,14 +164,9 @@
                  return new Inspector(document.querySelector("#map-area"))
             }
 
-            // --- COLUNA ESQUERDA (EMBAIXO 1) ---
+            // --- COLUNA ESQUERDA (EMBAIXO) ---
             if (name === "viewof scatterMarginal") {
                 return new Inspector(document.querySelector("#dashboard-area"));
-            }
-
-            // --- COLUNA ESQUERDA (EMBAIXO 2) ---
-            if (name === "viewof heatmapFiltros") {
-                 return new Inspector(document.querySelector("#heatmap"))
             }
 
             return null;
