@@ -29,7 +29,7 @@
         header {
             text-align: left;
             width: 90%;       
-            max-width: 1100px;
+            max-width: 1200px; /* Aumentei um pouco para caber melhor os gráficos lado a lado */
             padding: 40px 0 20px 0;
         }
 
@@ -63,12 +63,12 @@
         /* --- 2. CONTAINER PRINCIPAL --- */
         .graphics-container {
             width: 90%;
-            max-width: 1100px;
+            max-width: 1200px; /* Acompanha o header */
             margin-bottom: 50px;
             
             display: flex; 
             flex-direction: row; 
-            gap: 30px; 
+            gap: 20px; /* Espaço entre Esquerda e Direita reduzido */
             align-items: flex-start;
         }
 
@@ -76,23 +76,33 @@
         .map-wrapper, .dashboard-wrapper {
             display: flex;           
             flex-direction: column;  
-            gap: 40px;               
+            gap: 15px; /* <--- AJUSTE: Diminui o espaço entre os gráficos na vertical (puxa o heatmap pra cima) */
             min-width: 0;
         }
 
         .map-wrapper {
-            flex: 3; /* Coluna Esquerda (60%) */
+            flex: 1; /* <--- AJUSTE: 50% de largura */
         }
 
         .dashboard-wrapper {
-            flex: 2; /* Coluna Direita (40%) */
+            flex: 1; /* <--- AJUSTE: 50% de largura (antes era menor, por isso o heatmap ficava pequeno) */
         }
 
         /* --- ESTILOS DOS GRÁFICOS --- */
         #map-area, #grafo, #dashboard-area, #heatmap, #mapa-regionais {
             width: 100%;
-            min-height: 300px; 
             border-radius: 8px;
+        }
+        
+        /* Altura padrão para a maioria */
+        #map-area, #dashboard-area, #grafo, #heatmap {
+             min-height: 300px;
+        }
+
+        /* <--- AJUSTE CRÍTICO: Altura menor para o Mapa de Regionais */
+        /* Como ele é pequeno, se deixarmos 300px ele cria um buraco vazio embaixo */
+        #mapa-regionais {
+            min-height: 200px; 
         }
 
         /* Força SVG/Canvas a não estourar */
