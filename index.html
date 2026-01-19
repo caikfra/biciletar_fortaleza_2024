@@ -68,46 +68,44 @@
             
             display: flex; 
             flex-direction: row; 
-            gap: 30px; /* Espaço horizontal entre Coluna Esquerda e Direita */
+            gap: 30px; 
             align-items: flex-start;
         }
 
-        /* --- CONFIGURAÇÃO DAS COLUNAS (Vertical Stack) --- */
+        /* --- CONFIGURAÇÃO DAS COLUNAS --- */
         .map-wrapper, .dashboard-wrapper {
-            display: flex;           /* Habilita flexbox vertical */
-            flex-direction: column;  /* Empilha um embaixo do outro */
-            gap: 40px;               /* Espaço VERTICAL entre os gráficos */
+            display: flex;           
+            flex-direction: column;  
+            gap: 40px;               
             min-width: 0;
         }
 
         .map-wrapper {
-            flex: 3; /* Coluna Esquerda mais larga (60%) */
+            flex: 3; /* Coluna Esquerda (60%) */
         }
 
         .dashboard-wrapper {
-            flex: 2; /* Coluna Direita mais estreita (40%) */
+            flex: 2; /* Coluna Direita (40%) */
         }
 
         /* --- ESTILOS DOS GRÁFICOS --- */
-        /* Define altura mínima para não sumirem enquanto carregam */
-        #map-area, #grafo, #dashboard-area, #heatmap {
+        #map-area, #grafo, #dashboard-area, #heatmap, #mapa-regionais {
             width: 100%;
             min-height: 300px; 
-            /* background: #f9f9f9;  <-- Opcional: cor de fundo temporária para ver onde estão */
             border-radius: 8px;
         }
 
-        /* Força SVG/Canvas a não estourar a largura */
+        /* Força SVG/Canvas a não estourar */
         .observablehq svg, .observablehq canvas {
             max-width: 100% !important;
             height: auto !important;
-            display: block; /* Remove espaços extras */
+            display: block; 
         }
 
         /* --- RESPONSIVIDADE --- */
         @media (max-width: 900px) {
             .graphics-container {
-                flex-direction: column; /* Em celular, tudo vira uma coluna só */
+                flex-direction: column; 
             }
             .map-wrapper, .dashboard-wrapper {
                 width: 100%;
@@ -129,7 +127,12 @@
     <div class="graphics-container">
         
         <div class="map-wrapper">
-            <div id="map-area"></div> <div id="grafo"></div>    </div>
+            <div id="grafo"></div>          
+            
+            <div id="mapa-regionais"></div> 
+            
+            <div id="map-area"></div>       
+        </div>
 
         <div class="dashboard-wrapper">
             <div id="dashboard-area"></div> <div id="heatmap"></div>        </div>
@@ -139,38 +142,37 @@
     <script type="module">
         import {Runtime, Inspector} from "https://cdn.jsdelivr.net/npm/@observablehq/runtime@5/dist/runtime.js";
         
-        // Link atualizado (Público)
+        // Link público
         import define1 from "https://api.observablehq.com/@matheus-finger/bicicletar-com-d3.js?v=4"; 
 
         const runtime = new Runtime();
 
         runtime.module(define1, name => {
             
-            // --- DIREITA (TOPO) ---
-            if (name === "viewof scatterMarginal") {
-                return new Inspector(document.querySelector("#dashboard-area"));
+            // --- ESQUERDA (TOPO) ---
+            if (name === "viewof grafo_bipartido") {
+                 return new Inspector(document.querySelector("#grafo"))
+            }
+
+            // --- ESQUERDA (MEIO) ---
+            if (name === "mapa_regionais") {
+                 return new Inspector(document.querySelector("#mapa-regionais"))
             }
             
-            // --- ESQUERDA (TOPO) ---
+            // --- ESQUERDA (FIM - O mapa antigo) ---
             if (name === "viewof mapa_saldo_d3") {
                  return new Inspector(document.querySelector("#map-area"))
             }
 
-            // --- ESQUERDA (EMBAIXO) ---
-            if (name === "viewof grafo_bipartido") {
-                 return new Inspector(document.querySelector("#grafo"))
+            // --- DIREITA (TOPO) ---
+            if (name === "viewof scatterMarginal") {
+                return new Inspector(document.querySelector("#dashboard-area"));
             }
 
             // --- DIREITA (EMBAIXO) ---
             if (name === "viewof heatmapFiltros") {
                  return new Inspector(document.querySelector("#heatmap"))
             }
-
-            // --- MAPA ESTAÇÕES (Comentei para não dar erro, pois não tem div no HTML acima) ---
-            /* if (name === "viewof mapa") {
-                 return new Inspector(document.querySelector("#map-estacoes"))
-            } 
-            */
 
             return null;
         });
